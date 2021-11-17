@@ -17,12 +17,16 @@ function Books() {
             id: uuid.v4(),
             title: e.target.title.value,
             author: e.target.author.value,
-            year: e.target.year.value,
+            genre: e.target.genre.value,
           };
           dispatch(pushBook(newBook));
           document.getElementById("myForm").reset();
         }}
       >
+        <label htmlFor="genre">
+          Genre:
+          <input type="text" name="genre" required />
+        </label>{" "}
         <label htmlFor="title">
           Title:
           <input type="text" name="title" required />
@@ -30,10 +34,6 @@ function Books() {
         <label htmlFor="author">
           Author:
           <input type="text" name="author" required />
-        </label>{" "}
-        <label htmlFor="year">
-          Year:
-          <input type="text" name="year" required />
         </label>{" "}
         <input type="submit" value="Add Book" />
       </form>{" "}
