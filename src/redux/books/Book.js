@@ -1,38 +1,26 @@
 /* eslint-disable linebreak-style */
-const ADD_BOOK = "bookStore/books/PUSH_BOOK";
-const DELETE_BOOK = "bookStore/books/DELETE_BOOK";
-const GET = "bookStore/books/GET";
 
-const initState = [];
+export const initialState = [];
 
-export const addBook = (extraBook) => ({
-  type: ADD_BOOK,
-  extraBook,
+export const pushBook = (payload) => ({
+  type: "PUSH_BOOK",
+  payload,
 });
-
 export const deleteBook = (id) => ({
-  type: DELETE_BOOK,
+  type: "DELETE_BOOK",
   id,
 });
 
-export const getBooks = () => ({
-  type: GET,
-});
-
-const booksReducer = (state = initState, action = { type: "error" }) => {
-  let books;
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_BOOK:
-      state.push(action.extraBook);
-      return state;
-    case DELETE_BOOK:
-      books = state.filter((book) => book.id !== action.id);
-      return books;
-    case GET:
-      return state;
+    case "PUSH_BOOK":
+      return [...state, action.payload];
+    case "DELETE_BOOK":
+      return state.filter((item) => item.id !== action.id);
+
     default:
       return state;
   }
 };
 
-export default booksReducer;
+export default reducer;

@@ -1,52 +1,44 @@
-import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addBook } from "../../redux/books/Book";
+import { pushBook } from "../../redux/books/Book";
 
-const Form = () => {
+const uuid = require("uuid");
+
+function Books() {
   const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [genre, setGenre] = useState("");
 
-  const changeTitle = (e) => setTitle(e.target.value);
-  const changeAuthor = (e) => setAuthor(e.target.value);
-  const changeGenre = (e) => setGenre(e.target.value);
-
-  const submitBook = (e) => {
-    const newBook = {
-      id: Date.now(),
-      genre,
-      title,
-      author,
-    };
-    dispatch(addBook(newBook));
-    e.preventDefault();
-  };
   return (
-    <form onSubmit={submitBook}>
-      <input
-        placeholder="title"
-        onChange={changeTitle}
-        type="text"
-        id="book-title"
-      />
-      <input
-        placeholder="genre"
-        onChange={changeGenre}
-        type="text"
-        id="book-genre"
-      />
-      <input
-        placeholder="author"
-        onChange={changeAuthor}
-        type="text"
-        id="book-author"
-      />
-      <button type="submit"> submit </button>{" "}
-    </form>
+    <>
+      <h1> Book List </h1>{" "}
+      <form
+        id="myForm"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const newBook = {
+            id: uuid.v4(),
+            title: e.target.title.value,
+            author: e.target.author.value,
+            year: e.target.year.value,
+          };
+          dispatch(pushBook(newBook));
+          document.getElementById("myForm").reset();
+        }}
+      >
+        <label htmlFor="title">
+          Title:
+          <input type="text" name="title" required />
+        </label>{" "}
+        <label htmlFor="author">
+          Author:
+          <input type="text" name="author" required />
+        </label>{" "}
+        <label htmlFor="year">
+          Year:
+          <input type="text" name="year" required />
+        </label>{" "}
+        <input type="submit" value="Add Book" />
+      </form>{" "}
+    </>
   );
-};
+}
 
-Form.displayName = "Form";
-
-export default Form;
+export default Books;
