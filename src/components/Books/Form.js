@@ -1,32 +1,44 @@
-import { addBook } from "../../redux/books/Book";
+import { useDispatch } from "react-redux";
+import { pushBook } from "../../redux/books/Book";
 
-const Form = () => {
-  const submitBook = (e) => {
-    e.preventDefault();
-    const bookName = document.getElementById("book-title").value;
-    const bookAuthor = document.getElementById("book-author").value;
-    const bookGenre = document.getElementById("book-genre").value;
-    const newBook = {
-      id: Date.now(),
-      genre: bookGenre,
-      title: bookName,
-      author: bookAuthor,
-    };
-    addBook(newBook);
-  };
+const uuid = require("uuid");
+
+function Books() {
+  const dispatch = useDispatch();
+
   return (
-    <form onSubmit={addBook}>
-      <input placeholder="title" type="text" id="book-title" />
-      <input placeholder="genre" type="text" id="book-genre" />
-      <input placeholder="author" type="text" id="book-author" />
-      <button onClick={submitBook} type="button">
-        {" "}
-        submit{" "}
-      </button>{" "}
-    </form>
+    <>
+      <h1> Book List </h1>{" "}
+      <form
+        id="myForm"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const newBook = {
+            id: uuid.v4(),
+            title: e.target.title.value,
+            author: e.target.author.value,
+            genre: e.target.genre.value,
+          };
+          dispatch(pushBook(newBook));
+          document.getElementById("myForm").reset();
+        }}
+      >
+        <label htmlFor="genre">
+          Genre:
+          <input type="text" name="genre" required />
+        </label>{" "}
+        <label htmlFor="title">
+          Title:
+          <input type="text" name="title" required />
+        </label>{" "}
+        <label htmlFor="author">
+          Author:
+          <input type="text" name="author" required />
+        </label>{" "}
+        <input type="submit" value="Add Book" />
+      </form>{" "}
+    </>
   );
-};
+}
 
-Form.displayName = "Form";
-
-export default Form;
+export default Books;
