@@ -1,30 +1,9 @@
 /* eslint-disable linebreak-style */
-const ADD_BOOK = "bookStore/books/ADD_BOOK";
+const ADD_BOOK = "bookStore/books/PUSH_BOOK";
 const DELETE_BOOK = "bookStore/books/DELETE_BOOK";
-const GET_BOOK = "bookStore/books/GET_BOOK";
+const GET = "bookStore/books/GET";
 
-export const initState = {
-  books: [
-    {
-      id: 0,
-      genre: "Action",
-      title: "The Hunger Games",
-      author: "Suzanne Collins",
-    },
-    {
-      id: 1,
-      genre: "Science Fiction",
-      title: "Dune",
-      author: "Frank Herbert",
-    },
-    {
-      id: 2,
-      genre: "Economy",
-      title: "Capital in the Twenty-First Century",
-      author: "Suzanne Collins",
-    },
-  ],
-};
+const initState = [];
 
 export const addBook = (extraBook) => ({
   type: ADD_BOOK,
@@ -37,20 +16,23 @@ export const deleteBook = (id) => ({
 });
 
 export const getBooks = () => ({
-  type: GET_BOOK,
+  type: GET,
 });
 
-const reducer = (action = { type: "error" }, state = initState) => {
+const booksReducer = (state = initState, action = { type: "error" }) => {
+  let books;
   switch (action.type) {
     case ADD_BOOK:
-      return [...state.books, action.extraBook];
+      state.push(action.extraBook);
+      return state;
     case DELETE_BOOK:
-      return state.books.filter((book) => book.id !== action.id);
-    case GET_BOOK:
+      books = state.filter((book) => book.id !== action.id);
+      return books;
+    case GET:
       return state;
     default:
       return state;
   }
 };
 
-export default reducer;
+export default booksReducer;
