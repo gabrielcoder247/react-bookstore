@@ -3,9 +3,21 @@ import { pushBook } from "../../redux/books/Book";
 
 const uuid = require("uuid");
 
+// const baseId =
+//   "https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps";
+
 function Books() {
   const dispatch = useDispatch();
 
+  // const generateId = async () => {
+  //   const response = await fetch(`${baseId}/`, {
+  //     method: "POST",
+  //   });
+  //   const json = await response.text();
+  //   console.log(json);
+  // };
+
+  // generateId();
   return (
     <>
       <h1> Book List </h1>{" "}
