@@ -1,23 +1,19 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Categories from "./components/Categories/Categories";
-import Header from "./components/Header";
-import BookSection from "./components/Books/BookSection";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Books from "./components/books";
+import Categories from "./components/categories";
+import NavBar from "./components/NavBar";
 
-const App = () => (
-  <Router>
-    <Header />
-    <Switch>
-      <Route path="/" exact key="/">
-        <BookSection />
-      </Route>{" "}
-      <Route path="/categories" exact key="/categories">
-        {" "}
-        <Categories />{" "}
-      </Route>{" "}
-    </Switch>{" "}
-  </Router>
-);
-
-App.displayName = "App";
+function App() {
+  return (
+    <div>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Books />} />{" "}
+        <Route path="/categories" element={<Categories />} />{" "}
+      </Routes>{" "}
+    </div>
+  );
+}
 
 export default App;

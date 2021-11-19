@@ -1,46 +1,107 @@
-/* eslint-disable linebreak-style */
+const FETCH_BOOKS_BEGIN = "bookStore/books/FETCH_BOOKS_BEGIN";
+const FETCH_BOOKS_SUCCESS = "bookStore/books/FETCH_BOOKS_SUCCESS";
+const FETCH_BOOKS_FAILURE = "bookStore/books/FETCH_BOOKS_FAILURE";
 
-const baseId =
-  "https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/";
-const appId = "j0OQb9mCsBBmyNW5xHF4";
-
-const PUSH_BOOK = "bookStore/books/ADD_BOOK";
-const DELETE_BOOK = "bookStore/books/REMOVE_BOOK";
-
-export const initialState = [];
-
-export const pushBook = (payload) => (dispatch) => {
-  dispatch({ type: PUSH_BOOK, payload });
-  fetch(`${baseId}/${appId}/books`, {
-    method: "POST",
-    mode: "no-cors",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  }).then((response) => response.json);
+const initialState = {
+  books: [],
+  loading: false,
+  error: null,
 };
 
-export const deleteBook = (id) => (dispatch) => {
-  dispatch({
-    type: DELETE_BOOK,
-    id,
-  });
-  const itemId = id.item_id;
-  fetch(`${baseId}/${appId}/books/${itemId}`, {
-    method: "DELETE",
-  }).then((response) => response.json());
-};
+const fetchBooksBegin = () => ({
+  type: FETCH_BOOKS_BEGIN,
+});
 
-const reducer = (state = initialState, action) => {
+const fetchBooksSuccess = (payload) => ({
+  type: FETCH_BOOKS_SUCCESS,
+  payload,
+});
+
+const fetchBooksFailure = (error) => ({
+  type: FETCH_BOOKS_FAILURE,
+  payload: { error },
+});
+
+export const ApiUrl =
+  "https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/j0OQb9mCsBBmyNW5xHF4/books/";
+
+function handleErrors(response) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
+
+export function deleteBooksApi(payload) {
+  return (dispatch) => {
+    dispatch(fetchBooksBegin());
+    return fetch(ApiUrl + payload, {
+      method: "delete",
+      body: JSON.stringify({
+        item_id: payload,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then(handleErrors)
+      .then((res) => res.text())
+      .then((json) => {
+        if (json) {
+          fetch(ApiUrl)
+            .then(handleErrors)
+            .then((res) => res.json())
+            .then((json) => {
+              dispatch(fetchBooksSuccess(json));
+              return json;
+            });
+        }
+      })
+      .catch((error) => dispatch(fetchBooksFailure(error)));
+  };
+}
+
+export function fetchBooks() {
+  return (dispatch) => {
+    dispatch(fetchBooksBegin());
+    return fetch(ApiUrl)
+      .then(handleErrors)
+      .then((res) => res.json())
+      .then((json) => {
+        dispatch(fetchBooksSuccess(json));
+        return json;
+      })
+      .catch((error) => dispatch(fetchBooksFailure(error)));
+  };
+}
+
+const booksReducer = (state = initialState, action) => {
   switch (action.type) {
-    case PUSH_BOOK:
-      return [...state, action.payload];
-    case DELETE_BOOK:
-      return state.filter((item) => item.id !== action.id);
+    case FETCH_BOOKS_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case FETCH_BOOKS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        books: action.payload,
+      };
+
+    case FETCH_BOOKS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+        books: [],
+      };
 
     default:
       return state;
   }
 };
 
-export default reducer;
+export default booksReducer;
