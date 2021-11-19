@@ -1,25 +1,19 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Books from "./components/Books/Books";
-import Categories from "./components/Categories/Categories";
-import Header from "./components/Header";
-import Form from "./components/Books/Form";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Books from "./components/books";
+import Categories from "./components/categories";
+import NavBar from "./components/NavBar";
 
-const App = () => (
-  <Router>
-    <Header />
-    <Switch>
-      <Route path="/" exact key="/">
-        <Books />
-        <Form />
-      </Route>{" "}
-      <Route path="/categories" exact key="/categories">
-        {" "}
-        <Categories />{" "}
-      </Route>{" "}
-    </Switch>{" "}
-  </Router>
-);
-
-App.displayName = "App";
+function App() {
+  return (
+    <div>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Books />} />{" "}
+        <Route path="/categories" element={<Categories />} />{" "}
+      </Routes>{" "}
+    </div>
+  );
+}
 
 export default App;
