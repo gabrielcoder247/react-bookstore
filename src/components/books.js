@@ -43,11 +43,11 @@ export default function Books() {
     dispatch(deleteBooksApi(e.target.id));
   };
 
-  const booksArray = useSelector((state) => state.booksReducer.books);
-  const listItems = Object.keys(booksArray).map((book) => (
+  const books = useSelector((state) => state.booksReducer.books);
+  const listItems = Object.keys(books).map((book) => (
     <div key={book}>
-      <p> {booksArray[book][0].genre} </p> <p> {booksArray[book][0].title} </p>{" "}
-      <p> {booksArray[book][0].category} </p>{" "}
+      <p> {books[book][0].genre} </p> <p> {books[book][0].title} </p>{" "}
+      <p> {books[book][0].category} </p>{" "}
       <button type="button" id={book} onClick={removeBookFromStore}>
         {" "}
         Remove Book{" "}
