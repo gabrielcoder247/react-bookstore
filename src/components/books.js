@@ -6,9 +6,6 @@ import { fetchBooks, deleteBooksApi, ApiUrl } from "../redux/books/Book";
 export default function Books() {
   const dispatch = useDispatch();
 
-  //   const ApiUrl =
-  //     "https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/j0OQb9mCsBBmyNW5xHF4/books/";
-
   const getItems = () => {
     dispatch(fetchBooks());
   };
