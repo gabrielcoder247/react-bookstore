@@ -102,7 +102,6 @@ export default function Books() {
         <hr />{" "}
       </div>{" "}
       <form className="form">
-        <h2> ADD NEW BOOK </h2>{" "}
         <input placeholder="Book title" className="title" />
         <input placeholder="Category" className="author" />
         <button type="submit" onClick={submitBookToStore} className="add-btn">
