@@ -29,7 +29,7 @@ Book.defaultProps = {
   id: -1,
   title: "A Python Hello World",
   genre: "Education",
-  author: "Arturo Ortega",
+  author: "Gabriel Nwachukwu",
   onClick: () => {},
 };
 
